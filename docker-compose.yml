@@ -2,7 +2,7 @@ version: '2'
 
 services:
   taiga:
-    build: .
+    image: benhutchins/taiga
     ports:
       - 80:80
     depends_on:
