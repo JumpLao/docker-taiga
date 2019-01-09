@@ -5,27 +5,13 @@ services:
     build: .
     ports:
       - 80:80
-      # - 443:443 # To enable SSL, uncomment this line
     depends_on:
       - postgres
     volumes:
-      # I recommend specifying a volume that maps to taiga's media,
-      # this way uploaded files are not lost during upgrades of the taiga image
-      - ./media:/usr/src/taiga-back/media
-
-      # If you'd like to store the configuration outside of the container,
-      # uncomment this volume. This allows for easy changes to the configuration.
-      # - ./conf/taiga:/taiga
-
-      # - ./ssl.crt:/etc/nginx/ssl/ssl.crt:ro # To enable SSL, uncomment this line
-      # - ./ssl.key:/etc/nginx/ssl/ssl.key:ro # To enable SSL, uncomment this line
+      - taiga-media:./media:/usr/src/taiga-back/media
     environment:
       # Your hostname (REQUIRED)
-      TAIGA_HOSTNAME: localhost
-
-      # Database settings
-      # To use an external database, simply update these and remove the postgres
-      # service from this docker-compose.yml file
+      TAIGA_HOSTNAME: ${HOSTNAME}
       TAIGA_DB_NAME: taigadb
       TAIGA_DB_HOST: postgres
       TAIGA_DB_USER: postgres
@@ -33,17 +19,21 @@ services:
       TAIGA_SLEEP: 15 # when the db comes up from docker, it is usually too quick
 
       # TAIGA_SSL: True # To enable SSL, uncomment this line
-      # TAIGA_SSL_BY_REVERSE_PROXY: True # To enable SSL, handling by a reverse proxy, uncomment this
+      TAIGA_SSL_BY_REVERSE_PROXY: True # To enable SSL, handling by a reverse proxy, uncomment this
 
       # To use an external SMTP for emails, fill in these values:
-      # TAIGA_ENABLE_EMAIL: True
-      # TAIGA_EMAIL_FROM: no-reply@taiga.mycompany.net
-      # TAIGA_EMAIL_USE_TLS: True
-      # TAIGA_EMAIL_HOST: smtp.google.com
-      # TAIGA_EMAIL_PORT: 587
-      # TAIGA_EMAIL_USER: me@gmail.com
-      # TAIGA_EMAIL_PASS: super-secure-pass phrase thing!
-
+      TAIGA_ENABLE_EMAIL: ${ENABLE_EMAIL}
+      TAIGA_EMAIL_FROM: ${EMAIL_FROM}
+      TAIGA_EMAIL_USE_TLS: ${EMAIL_USE_TLS}
+      TAIGA_EMAIL_HOST: ${EMAIL_HOST}
+      TAIGA_EMAIL_PORT: ${EMAIL_PORT}
+      TAIGA_EMAIL_USER: ${EMAIL_USER}
+      TAIGA_EMAIL_PASS: ${EMAIL_PASS}
+    links:
+     - rabbit
+     - postgres
+     - redis
+     - events
   postgres:
     image: postgres
     environment:
@@ -54,4 +44,18 @@ services:
       - 5432
     volumes:
       # this helps prevent your postgres data from deleted
-      - ./pgdata:/var/lib/postgresql/data
+      - taiga-pgdata:/var/lib/postgresql/data
+  rabbit:
+    image: rabbitmq:3
+  redis:
+    image: redis:3
+  celery:
+    image: celery
+    links:
+     - rabbit
+  events:
+    image: benhutchins/taiga-events
+    links:
+     - rabbit
+  
+   
