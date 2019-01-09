@@ -6,7 +6,7 @@ services:
     depends_on:
       - postgres
     volumes:
-      - taiga-media:./media:/usr/src/taiga-back/media
+      - taiga-media:/usr/src/taiga-back/media
     environment:
       # Your hostname (REQUIRED)
       TAIGA_HOSTNAME: ${HOSTNAME}
