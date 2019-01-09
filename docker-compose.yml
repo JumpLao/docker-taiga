@@ -3,8 +3,6 @@ version: '2'
 services:
   taiga:
     image: benhutchins/taiga
-    ports:
-      - 80:80
     depends_on:
       - postgres
     volumes:
@@ -40,8 +38,6 @@ services:
       POSTGRES_DB: taigadb
       POSTGRES_PASSWORD: password
       POSTGRES_USER: postgres
-    ports:
-      - 5432
     volumes:
       # this helps prevent your postgres data from deleted
       - taiga-pgdata:/var/lib/postgresql/data
