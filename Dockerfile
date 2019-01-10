@@ -12,7 +12,8 @@ RUN apt-key adv \
   --recv-keys 573BFD6B3D8FBC641079A6ABABF5BD827BD9BF62
 
 RUN echo "deb http://nginx.org/packages/mainline/debian/ jessie nginx" >> /etc/apt/sources.list
-
+RUN wget http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u7_amd64.deb
+RUN dpkg -i libssl1.0.0_1.0.1t-1+deb8u7_amd64.deb
 RUN set -x; \
     apt-get update \
     && apt-get install -y --no-install-recommends \
