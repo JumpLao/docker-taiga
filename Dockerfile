@@ -19,6 +19,8 @@ RUN set -x; \
         gettext \
         ca-certificates \
         nginx=${NGINX_VERSION} \
+        nano \
+        vi \
     && rm -rf /var/lib/apt/lists/*
 
 RUN locale-gen en_US.UTF-8 && dpkg-reconfigure locales
