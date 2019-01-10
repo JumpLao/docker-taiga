@@ -56,7 +56,7 @@ ENV TAIGA_SSL False
 ENV TAIGA_ENABLE_EMAIL False
 ENV TAIGA_HOSTNAME localhost
 ENV TAIGA_SECRET_KEY "!!!REPLACE-ME-j1598u1J^U*(y251u98u51u5981urf98u2o5uvoiiuzhlit3)!!!"
-
+ENV TAIGA_SSL_BY_REVERSE_PROXY False
 RUN python manage.py collectstatic --noinput
 
 RUN locale -a
