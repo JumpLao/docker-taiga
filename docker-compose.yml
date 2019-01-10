@@ -18,7 +18,7 @@ services:
 
       # TAIGA_SSL: True # To enable SSL, uncomment this line
       TAIGA_SSL_BY_REVERSE_PROXY: True # To enable SSL, handling by a reverse proxy, uncomment this
-
+      TAIGA_SSL: True
       # To use an external SMTP for emails, fill in these values:
       TAIGA_ENABLE_EMAIL: ${ENABLE_EMAIL}
       TAIGA_EMAIL_FROM: ${EMAIL_FROM}
