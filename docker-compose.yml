@@ -27,6 +27,8 @@ services:
       TAIGA_EMAIL_PORT: ${EMAIL_PORT}
       TAIGA_EMAIL_USER: ${EMAIL_USER}
       TAIGA_EMAIL_PASS: ${EMAIL_PASS}
+      RABBIT_PORT: 5672
+      REDIS_PORT: 6379
     links:
      - rabbit
      - postgres
